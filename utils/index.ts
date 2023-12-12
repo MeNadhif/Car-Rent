@@ -4,12 +4,12 @@ export async function fetchCars(filters: FilterProps) {
    const { manufacturer, year, model, limit, fuel } = filters;
 
    const headers = {
-      "X-RapidAPI-Key": "37cac0956bmsh81253faf6453c85p1acae3jsnf75f760f0c1b",
+      "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY || "",
       "X-RapidAPI-Host": "cars-by-api-ninjas.p.rapidapi.com",
    };
 
    const response = await fetch(
-      `https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}$fuel_type=${fuel}`,
+      `https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`,
       { headers: headers }
    );
 
@@ -37,7 +37,10 @@ export const generateCarImageUrl = (car: CarProps, angle?: string) => {
    const url = new URL("https://cdn.imagin.studio/getimage");
    const { make, model, year } = car;
 
-   url.searchParams.append("customer", "hrjavascript-mastery");
+   url.searchParams.append(
+      "customer",
+      process.env.NEXT_PUBLIC_IMAGIN_API_KEY || ""
+   );
    url.searchParams.append("make", make);
    url.searchParams.append("modelFamily", model.split(" ")[0]);
    url.searchParams.append("zoomType", "fullscreen");
